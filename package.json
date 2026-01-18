@@ -1,0 +1,10 @@
+{
+  "name": "fullstack-users",
+  "version": "1.0.0",
+  "description": "Full-stack users management application",
+  "scripts": {
+    "install-all": "cd backend && npm install && cd ../frontend && npm install",
+    "dev": "echo 'Run backend and frontend in separate terminals:\\n1. Terminal 1: cd backend && npm run dev\\n2. Terminal 2: cd frontend && npm run dev'",
+    "setup-backend": "cd backend && npm run prisma:generate && npm run prisma:push && npm run seed"
+  }
+}
