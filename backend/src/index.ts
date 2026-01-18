@@ -5,7 +5,6 @@ import { PrismaClient, Role } from '@prisma/client';
 const prisma = new PrismaClient();
 const app = express();
 
-// CORS configuration - update with your frontend URL after deployment
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:5174',
@@ -17,14 +16,13 @@ app.use(cors({
     if (!origin || allowedOrigins.includes(origin) || allowedOrigins.includes('*')) {
       callback(null, true);
     } else {
-      callback(null, true); // Allow all in development
+      callback(null, true);
     }
   },
   credentials: true
 }));
 app.use(express.json());
 
-// Types
 interface UsersQueryParams {
   search?: string;
   role?: Role;
@@ -34,7 +32,6 @@ interface UserParams {
   id: string;
 }
 
-// GET /users - List users with search and role filter
 app.get('/users', async (req: Request<{}, {}, {}, UsersQueryParams>, res: Response) => {
   try {
     const { search, role } = req.query;
@@ -67,7 +64,6 @@ app.get('/users', async (req: Request<{}, {}, {}, UsersQueryParams>, res: Respon
   }
 });
 
-// GET /users/:id - Get single user
 app.get('/users/:id', async (req: Request<UserParams>, res: Response) => {
   try {
     const { id } = req.params;
@@ -87,7 +83,6 @@ app.get('/users/:id', async (req: Request<UserParams>, res: Response) => {
   }
 });
 
-// PATCH /users/:id/toggle-active - Toggle user's active status
 app.patch('/users/:id/toggle-active', async (req: Request<UserParams>, res: Response) => {
   try {
     const { id } = req.params;
@@ -112,7 +107,6 @@ app.patch('/users/:id/toggle-active', async (req: Request<UserParams>, res: Resp
   }
 });
 
-// Error handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Something went wrong!' });
@@ -124,11 +118,9 @@ app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
 
-// Graceful shutdown
 process.on('SIGINT', async () => {
   await prisma.$disconnect();
   process.exit(0);
 });
 
-// Export for Vercel serverless
 export default app;

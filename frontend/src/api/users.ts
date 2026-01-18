@@ -1,7 +1,6 @@
 import axios from "axios";
 import type { User, UsersQueryParams } from "@/types/user";
 
-// Use environment variable for production, fallback to localhost for development
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
 
 const api = axios.create({

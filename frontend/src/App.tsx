@@ -12,7 +12,7 @@ import type { Role } from "@/types/user";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60, // 1 minute
+      staleTime: 1000 * 60,
       refetchOnWindowFocus: false,
     },
   },
@@ -24,10 +24,8 @@ function Dashboard() {
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const [sortDirection, setSortDirection] = useState<SortDirection>("none");
 
-  // Debounce search for query cancellation
   const debouncedSearch = useDebounce(search, 300);
 
-  // Fetch users with search and role filter
   const {
     data: users,
     isLoading: isLoadingUsers,
@@ -37,16 +35,10 @@ function Dashboard() {
     role: role || undefined,
   });
 
-  // Fetch selected user details
   const { data: selectedUser, isLoading: isLoadingUser } = useUser(selectedUserId);
-
-  // Toggle active mutation
   const toggleActiveMutation = useToggleUserActive();
-
-  // Viewing timer
   const viewingSeconds = useViewingTimer(selectedUserId);
 
-  // Sort users locally
   const sortedUsers = useMemo(() => {
     if (!users || sortDirection === "none") return users;
 
@@ -76,7 +68,6 @@ function Dashboard() {
       />
 
       <div className="flex">
-        {/* Left Panel - Users List */}
         <div className="w-1/3 min-w-[300px] max-w-[400px] border-r border-gray-200 bg-white min-h-[calc(100vh-130px)]">
           <div className="p-4 border-b border-gray-100 flex items-center justify-between">
             <h2 className="font-semibold text-gray-900">Users List</h2>
@@ -94,7 +85,6 @@ function Dashboard() {
           />
         </div>
 
-        {/* Right Panel - User Details */}
         <div className="flex-1 p-6">
           <UserDetails
             user={selectedUser}

@@ -23,15 +23,12 @@ export function useToggleUserActive() {
   return useMutation({
     mutationFn: toggleUserActive,
     onMutate: async (userId: string) => {
-      // Cancel any outgoing refetches
       await queryClient.cancelQueries({ queryKey: ["users"] });
       await queryClient.cancelQueries({ queryKey: ["user", userId] });
 
-      // Snapshot the previous values
       const previousUsers = queryClient.getQueryData<User[]>(["users"]);
       const previousUser = queryClient.getQueryData<User>(["user", userId]);
 
-      // Optimistically update the user in the list
       queryClient.setQueriesData<User[]>(
         { queryKey: ["users"] },
         (old) =>
@@ -40,7 +37,6 @@ export function useToggleUserActive() {
           )
       );
 
-      // Optimistically update the single user
       queryClient.setQueryData<User>(["user", userId], (old) =>
         old ? { ...old, active: !old.active } : old
       );
@@ -48,7 +44,6 @@ export function useToggleUserActive() {
       return { previousUsers, previousUser, userId };
     },
     onError: (_err, _userId, context) => {
-      // Rollback on error
       if (context?.previousUsers) {
         queryClient.setQueriesData({ queryKey: ["users"] }, context.previousUsers);
       }
@@ -60,7 +55,6 @@ export function useToggleUserActive() {
       }
     },
     onSettled: (_data, _error, userId) => {
-      // Invalidate queries to refetch
       queryClient.invalidateQueries({ queryKey: ["users"] });
       queryClient.invalidateQueries({ queryKey: ["user", userId] });
     },
