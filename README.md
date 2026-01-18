@@ -22,8 +22,8 @@ A modern full-stack application for managing users with search, filtering, sorti
 
 ## Tech Stack
 
-**Backend:** Node.js, Express, TypeScript, MongoDB, Prisma
-**Frontend:** React 18, TypeScript, Vite, TanStack Query, Tailwind CSS, Axios
+- **Backend:** Node.js, Express, TypeScript, MongoDB, Prisma
+- **Frontend:** React 18, TypeScript, Vite, TanStack Query, Tailwind CSS, Axios
 
 ## Quick Start
 
